@@ -40,8 +40,8 @@
   "resources": [
    {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2020-06-01",
       "name": "nestedTemplate-CreateDNSName",
+      "apiVersion": "2020-06-01",
       "resourceGroup": "[parameters('dnsResourceGroup')]",
       "properties": 
       {
@@ -53,18 +53,18 @@
           "variables": {},
           "resources": [
             {
-              "apiVersion": "2018-05-01",
-              "name": "[parameters('domainName')]",
               "type": "Microsoft.Network/dnszones",
+              "name": "[parameters('domainName')]",
+              "apiVersion": "2018-05-01",
               "location": "global",
               "properties": {
                 "zoneType": "Public"
               }
             },
             {
-              "apiVersion": "2018-05-01",
-              "name": "[concat(parameters('domainName'), '/', parameters('subDomainName'))]",
               "type": "Microsoft.Network/dnszones/CNAME",
+              "name": "[concat(parameters('domainName'), '/', parameters('subDomainName'))]",
+              "apiVersion": "2018-05-01",
               "properties": {
                 "TTL": 3600,
                 "CNAMERecord": {
@@ -75,9 +75,9 @@
               ]
             },
             {
-              "apiVersion": "2018-05-01",
-              "name": "[concat(parameters('domainName'), '/asuid.', parameters('subDomainName'))]",
               "type": "Microsoft.Network/dnszones/TXT",
+              "name": "[concat(parameters('domainName'), '/asuid.', parameters('subDomainName'))]",
+              "apiVersion": "2018-05-01",
               "dependsOn": [
               ],
               "properties": {
@@ -97,9 +97,9 @@
       }
     },
    {
-      "apiVersion": "2020-09-01",
-      "name": "[concat(parameters('websiteName'), '/', parameters('subDomainName'),'.',parameters('domainName'))]",
       "type": "Microsoft.Web/sites/hostNameBindings",
+      "name": "[concat(parameters('websiteName'), '/', parameters('subDomainName'),'.',parameters('domainName'))]",
+      "apiVersion": "2020-09-01",
       "location": "[resourceGroup().location]",
       "properties": {
         "azureResourceName": "[concat('Microsoft.Web/sites/', parameters('websiteName'))]",
@@ -113,10 +113,10 @@
       ]
     },
     {
+      "type": "Microsoft.Web/certificates",
+      "name": "[variables('certificateName')]",
       "apiVersion": "2020-09-01",
       "location": "[resourceGroup().location]",
-      "name": "[variables('certificateName')]",
-      "type": "Microsoft.Web/certificates",
       "properties": {
         "serverFarmId": "[resourceId('Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]",
         "canonicalName": "[variables('certificateName')]"
@@ -126,9 +126,9 @@
       ]
     },
     {
-      "apiVersion": "2020-06-01",
-      "name": "linkedTemplate-bindManagedCertificatetoWebSite",
       "type": "Microsoft.Resources/deployments",
+      "name": "linkedTemplate-bindManagedCertificatetoWebSite",
+      "apiVersion": "2020-06-01",
       "properties": {
         "mode": "Incremental",
         "templateLink": {
